@@ -43,8 +43,8 @@ export default defineConfig({
         ],
       },
       manifest: {
-        name: "My PWA App",
-        short_name: "PWA App",
+        name: "CashFlow",
+        short_name: "CF",
         start_url: "/",
         display: "standalone",
         background_color: "#ffffff",

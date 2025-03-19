@@ -29,8 +29,6 @@ export default function TableMain() {
        
     ]
 
-    
-
   }
   const colorHead=[
     "#ffffff",

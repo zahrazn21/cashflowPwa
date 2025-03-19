@@ -1,3 +1,4 @@
+
 import 'react'
 interface Schedule{
   header: string[];
@@ -8,7 +9,7 @@ interface Schedule{
 interface T{
   data:Schedule
 }
-export default function TablePlan({data}:T) {
+export default function TableProfessors({data}:T) {
   // const dataPlan={
   //   header:
   //     ["ظرفیت","دانشکده","مقطع","ساعت کلاسی","نام استاد","نام درس","گروه","کد درس"],
@@ -61,17 +62,19 @@ export default function TablePlan({data}:T) {
   console.log(colorHead[1])
   return (
     <div className='mx-1 flex items-center  justify-center'>
-      <table className='w-[100%]'>
+      <table className='w-[100%]' >
         <thead>
           <tr className=''>
             {data.header.map((res,index)=>(
-               <th className='' key={index} >
-                 <p className={`mx-[2px] ${index==6 || index==7 ? "":"text-white"} text-[8px] p-1 bg-[${colorHead[7-index]}] `}    
-                 style={index==6 || index ==7 ? {border:`1px solid black`}:{ backgroundColor: colorHead[(7-index) % colorHead.length] ,border:`1px solid ${colorHead[(7-index)%colorHead.length]}` }}
+                index>0 &&
+                    <th className='' key={index} >
+                 <p className={`mx-[2px] ${index==6 ? "text-[#03045E]":"text-white bg-[#03045E]" } border-1 border-[#03045E] text-[8px] p-1  `}    
                 >
                  {res}
                  </p>
                </th>
+                
+               
             ))}
           </tr>
         </thead>
@@ -79,9 +82,9 @@ export default function TablePlan({data}:T) {
           {data.rows.map((res,index)=>(
             <tr key={index}>
                 {res.data.map((result,i)=>(
+                    i>0 &&
                   <td className='  text-center' key={i}>
-                  <p className={`${i==7 || i==6  ? "bg-[#03045E] text-white" :" hover:bg-gray-200 cursor-pointer"} border-[#D9D9D9] border-1 m-[2px] p-1 text-[7px]` }
-                style={i==6 || i==7 ? {border:`1px solid black`}:{ border:`1px solid ${colorHead[(7-i)%colorHead.length]}` }}
+                  <p className={`${ i==6  ? "bg-[#03045E] text-white" :" hover:bg-gray-200 cursor-pointer"} border-[#D9D9D9] border-1 m-[2px] p-1 text-[7px]` }
 
                 >
                   {result}
@@ -95,3 +98,4 @@ export default function TablePlan({data}:T) {
     </div>
   )
 }
+
