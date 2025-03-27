@@ -21,7 +21,7 @@ function App() {
 
   return (
     <>
-    <div className='h-[100vh] bg-gray-400 flex items-center justify-center '>
+    <div className='h-[100vh] overflow-y-hidden bg-gray-400 flex items-center justify-center '>
     {/* <Table></Table> */}
     <div className='h-[100vh] bg-white w-[430px] grid '>
       {/* <div className="mt-10">

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import TableDailyPlan from '../components/table/TableDailyPlan';
+import Date from '../components/ui/date';
 // import WeeklySchedule from './WeeklySchedule';
 
 export default function DailySchedule() {
@@ -106,7 +107,7 @@ return (
                 type="search" placeholder="Search" className='w-[140px] text-[10px] outline-0 mr-2' />
             </div>
             <div dir="rtl" className="filter  flex items-center  justify-between" >
-                <div className='w-[78px] h-[30px] border-2 rounded-[15px] border-[#03045E]'></div>
+              <Date></Date>
             </div>
           </div>
     

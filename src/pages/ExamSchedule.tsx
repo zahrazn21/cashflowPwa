@@ -7,6 +7,7 @@ import { CiFilter } from "react-icons/ci";
 // import TableProfessors from '../components/table/TableProfessors';
 // import { Link } from 'react-router-dom';
 import TableExamSchedule from '../components/table/TableExamSchedule';
+import Date from '../components/ui/date';
 
 export default function ExamSchedule() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -106,7 +107,8 @@ export default function ExamSchedule() {
                     type="search" placeholder="Search" className='w-[140px] text-[10px] outline-0 mr-2' />
                 </div>
                 <div dir="rtl" className="filter  flex items-center  justify-between" >
-                    <div className='w-[78px] h-[30px] border-2 rounded-[15px] border-[#03045E]'></div>
+                    {/* <div className='w-[78px] h-[30px] border-2 rounded-[15px] border-[#03045E]'></div> */}
+                <Date></Date>
                 </div>
               </div>
         

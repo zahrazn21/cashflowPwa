@@ -4,6 +4,7 @@ import TablePlan from '../components/table/TablePlan';
 import { useState } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
+import Date from '../components/ui/date';
 
 export default function CoursesOffered() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -111,7 +112,7 @@ export default function CoursesOffered() {
                     type="search" placeholder="Search" className='w-[140px] text-[10px] outline-0 mr-2' />
                 </div>
                 <div dir="rtl" className="filter  flex items-center  justify-between" >
-                    <div className='w-[78px] h-[30px] border-2 rounded-[15px] border-[#03045E]'></div>
+                 <Date></Date>
                 </div>
               </div>
         

@@ -80,8 +80,9 @@ export default function TablePlan({data}:T) {
             <tr key={index}>
                 {res.data.map((result,i)=>(
                   <td className='  text-center' key={i}>
+                 
                   <p className={`${i==7 || i==6  ? "bg-[#03045E] text-white" :" hover:bg-gray-200 cursor-pointer"} border-[#D9D9D9] border-1 m-[2px] p-1 text-[7px]` }
-                style={i==6 || i==7 ? {border:`1px solid black`}:{ border:`1px solid ${colorHead[(7-i)%colorHead.length]}` }}
+                // style={i==6 || i==7 ? {border:`1px solid black`}:{ border:`1px solid ${colorHead[(7-i)%colorHead.length]}` }}
 
                 >
                   {result}

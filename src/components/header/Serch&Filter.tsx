@@ -1,5 +1,5 @@
 import 'react'
-import { useState } from 'react';
+import {  useState } from 'react';
 import { IoPersonOutline } from "react-icons/io5";
 import { TbBaselineDensityMedium } from "react-icons/tb";
 import { FiAlertCircle } from "react-icons/fi";
@@ -81,6 +81,7 @@ const selectbyClick=(res:string,icon:React.ReactNode)=>{
     },
   };
   const location = useLocation();
+   
 
   return (
     <div className=''>
@@ -114,8 +115,10 @@ const selectbyClick=(res:string,icon:React.ReactNode)=>{
       <motion.div
         key={location.pathname}
         initial="initial"
+        // initial={shouldAnimate ? "initial" : false}
+
         animate="animate"
-        exit="exit"
+        // exit="exit"
         variants={pageVariants}
       >
         <Routes>
