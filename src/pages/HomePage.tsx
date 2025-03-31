@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 export default function HomePage() {
   return (
-    <div className='bg-[#03045E] flex items-center justify-center'>
+    <div className='bg-[#00ff0088] flex items-center justify-center'>
          <div className="w-[345px] flex items-center justify-center h-[631px] bg-[rgb(255,255,255,.77)] rounded-[30px]  my-10  max-w-[430px] min-h-[512px] ">
               <div className='h-[100%] grid gap-10 py-4'>
 
