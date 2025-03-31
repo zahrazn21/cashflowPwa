@@ -73,8 +73,12 @@ export default function ProfessorsClass() {
   
           // بررسی وجود داده‌ها قبل از به روز رسانی state
           if (res.data && res.data[0]) {
-            setDataTable(res.data[0]);
-            setFilteredCourses(res.data[0]);
+            const fetchedData = res.data[0];
+            localStorage.setItem("ProfessorsClassِData", JSON.stringify(fetchedData));
+      
+            setDataTable(fetchedData);
+            setFilteredCourses(fetchedData);
+          
 
           } else {
             console.error("داده‌ها معتبر نیستند");
@@ -85,6 +89,24 @@ export default function ProfessorsClass() {
           console.error("خطا در دریافت داده‌ها:", error);
         });
     }, []);
+
+
+
+    useEffect(() => {
+      const localData = localStorage.getItem("ProfessorsClassِData");
+      if (localData) {
+        const parsedData = JSON.parse(localData);
+        setDataTable(parsedData);
+        setFilteredCourses(parsedData);
+        console.log("داده‌ها از LocalStorage بارگذاری شدند.");
+      } else {
+        console.log("هیچ داده‌ای در LocalStorage پیدا نشد. بررسی کن که آیا داده‌ها ذخیره شدند یا نه.");
+      }
+      setIsLoading(false);
+    }, []);
+
+
+
     const categirisFilter=[
         {
         title:"دانشکده",

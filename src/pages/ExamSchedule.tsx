@@ -33,9 +33,10 @@ export default function ExamSchedule() {
   
           // بررسی وجود داده‌ها قبل از به روز رسانی state
           if (res.data && res.data[0]) {
-            setDataTable(res.data[0
-              
-            ]);
+            const fetchedData=res.data[0]
+            localStorage.setItem("ExamScheduleData",JSON.stringify(fetchedData))
+            setDataTable(fetchedData);
+
           } else {
             console.error("داده‌ها معتبر نیستند");
           }
@@ -44,6 +45,25 @@ export default function ExamSchedule() {
           console.error("خطا در دریافت داده‌ها:", error);
         });
     }, []);
+     useEffect(()=>{
+      const localData=localStorage.getItem("ExamScheduleData")
+      if(localData){
+        const data=JSON.parse(localData)
+        setDataTable(data)
+      }else{
+        console.log("هیچ داده‌ای در LocalStorage پیدا نشد. بررسی کن که آیا داده‌ها ذخیره شدند یا نه.");
+      }
+       
+     },[])
+
+
+
+
+
+
+
+
+
     // const dataPlan={
     //     header:
     //       ["نام استاد","نام درس","برنامه امتحانی","دانشکده","مقطع"],

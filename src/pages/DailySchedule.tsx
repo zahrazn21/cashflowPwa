@@ -32,8 +32,10 @@ export default function DailySchedule() {
 
         // بررسی وجود داده‌ها قبل از به روز رسانی state
         if (res.data && res.data[0]) {
-          setDataTable(res.data[0]);
-          setFilteredCourses(res.data[0]);
+          const fetchedData=res.data[0]
+          localStorage.setItem("DailyScheduleData",JSON.stringify(fetchedData))
+          setDataTable(fetchedData);
+          setFilteredCourses(fetchedData);
 
         } else {
           console.error("داده‌ها معتبر نیستند");
@@ -45,12 +47,23 @@ export default function DailySchedule() {
       });
   }, []);
 
-  console.log("data",dataTable);
+  useEffect(() => {
+    const localData = localStorage.getItem("DailyScheduleData");
+  
+    if (localData) {
+      const parsedData = JSON.parse(localData);
+      setDataTable(parsedData);
+      setFilteredCourses(parsedData);
+      console.log("داده‌ها از LocalStorage بارگذاری شدند.");
+    } else {
+      console.log("هیچ داده‌ای در LocalStorage پیدا نشد. بررسی کن که آیا داده‌ها ذخیره شدند یا نه.");
+    }
+    setIsLoading(false);
+  }, []);
+  
   
   const [searchTerm, setSearchTerm] = useState("");
 
-    
-    
   const categirisFilter=[
     {
     title:"دانشکده",

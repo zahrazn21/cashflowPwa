@@ -30,39 +30,45 @@ export default function CoursesOffered() {
        );
    
        useEffect(() => {
-        // ابتدا بررسی می‌کنیم که آیا داده‌ها در localStorage موجود هستند یا نه
-        const storedData = localStorage.getItem("CoursesOfferedData");
-    
-        if (storedData) {
-          // اگر داده‌ها در localStorage موجود بودند، از آن‌ها استفاده می‌کنیم
-          const parsedData = JSON.parse(storedData);
-          console.log("داده‌ها از localStorage بارگذاری شدند:", parsedData);
+        axios.get("http://localhost:3000/CoursesOfferedData")
+          .then((res) => {
+            console.log("داده‌های دریافتی از API:", res.data);
+      
+            if (res.data && res.data[0]) {
+              const fetchedData = res.data[0];
+      
+              // ذخیره داده‌ها در LocalStorage
+              localStorage.setItem("CoursesOfferedData", JSON.stringify(fetchedData));
+      
+              setDataTable(fetchedData);
+              setFilteredCourses(fetchedData);
+            } else {
+              console.error("داده‌ها معتبر نیستند:", res.data);
+            }
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.error("خطا در دریافت داده‌ها:", error);
+            setIsLoading(false);
+          });
+      }, []);
+
+      useEffect(() => {
+        const localData = localStorage.getItem("CoursesOfferedData");
+        if (localData) {
+          const parsedData = JSON.parse(localData);
           setDataTable(parsedData);
           setFilteredCourses(parsedData);
-          setIsLoading(false);
+          console.log("داده‌ها از LocalStorage بارگذاری شدند.");
         } else {
-          // اگر داده‌ها در localStorage نبودند، از API درخواست می‌کنیم
-          axios.get("http://localhost:3000/CoursesOfferedData")
-            .then((res) => {
-              console.log("داده‌های دریافتی از API:", res.data);
-    
-              // بررسی وجود داده‌ها قبل از به روز رسانی state
-              if (res.data && res.data[0]) {
-                setDataTable(res.data[0]);
-                setFilteredCourses(res.data[0]);
-    
-                // ذخیره داده‌ها در localStorage برای استفاده‌های بعدی
-                localStorage.setItem("CoursesOfferedData", JSON.stringify(res.data[0]));
-              } else {
-                console.error("داده‌ها معتبر نیستند");
-              }
-              setIsLoading(false);
-            })
-            .catch((error) => {
-              console.error("خطا در دریافت داده‌ها:", error);
-            });
+          console.log("هیچ داده‌ای در LocalStorage پیدا نشد. بررسی کن که آیا داده‌ها ذخیره شدند یا نه.");
         }
-      }, []); // این effect فقط یکبار هنگام mount شدن کامپوننت اجرا می‌شود
+        setIsLoading(false);
+      }, []);
+            
+    
+  
+
     // const dataPlan={
     //     header:
     //       ["ظرفیت","دانشکده","مقطع","ساعت کلاسی","نام استاد","نام درس","گروه","کد درس"],
