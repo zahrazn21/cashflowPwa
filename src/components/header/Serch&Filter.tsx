@@ -1,10 +1,13 @@
 import 'react'
 import {  useState } from 'react';
-import { IoPersonOutline } from "react-icons/io5";
-import { TbBaselineDensityMedium } from "react-icons/tb";
-import { FiAlertCircle } from "react-icons/fi";
+// import { IoPersonOutline } from "react-icons/io5";
+// import { TbBaselineDensityMedium } from "react-icons/tb";
+// import { FiAlertCircle } from "react-icons/fi";
 import { AnimatePresence, motion } from "framer-motion";
-
+import { IoNewspaperOutline } from "react-icons/io5";
+import { BsFillPersonLinesFill } from "react-icons/bs";
+import { PiBookOpenText } from "react-icons/pi";
+import { GrPlan } from "react-icons/gr";
 import { Link, Route,  Routes, useLocation } from 'react-router-dom';
 // import { routemenue } from '../../routers/routeMenu';
 import CoursesOffered from '../../pages/CoursesOffered';
@@ -47,17 +50,17 @@ const selectbyClick=(res:string,icon:React.ReactNode)=>{
 }
 
    const menuData=[
-    {title:"لیست دروس ارائه‌شده",link:"" , icon:<TbBaselineDensityMedium></TbBaselineDensityMedium>},
-    {title:"برنامه‌کلاسی اساتید",link:"professorsClass", icon:<IoPersonOutline></IoPersonOutline>},
-    {title:"برنامه روزانه",link:"dailySchedule",icon:""},
-    {title:"برنامه امتحانی",link:"ExamSchedule", icon:<FiAlertCircle></FiAlertCircle>},
+    {title:"لیست دروس ارائه‌شده",link:"" , icon:<PiBookOpenText></PiBookOpenText>},
+    {title:"برنامه‌کلاسی اساتید",link:"professorsClass", icon:<BsFillPersonLinesFill></BsFillPersonLinesFill>},
+    {title:"برنامه روزانه",link:"dailySchedule",icon:<IoNewspaperOutline></IoNewspaperOutline>},
+    {title:"برنامه امتحانی",link:"ExamSchedule", icon:<GrPlan></GrPlan>},
 
    ]
    
     
     
    const [item,setItem]=useState("لیست دروس ارائه‌شده")
-   const [iconItem,setIconItem]=useState<React.ReactNode>(<TbBaselineDensityMedium></TbBaselineDensityMedium>)
+   const [iconItem,setIconItem]=useState<React.ReactNode>(<PiBookOpenText></PiBookOpenText>)
 
   //  const router=useRoutes(routemenue)
 
@@ -88,10 +91,10 @@ const selectbyClick=(res:string,icon:React.ReactNode)=>{
       {/*    menue  */}
       <div  dir='rtl' className="relative mt-5 mb-10 flex items-center justify-center w-[430px] h-[38px] bg-[#CAE9FF]">
        <div className="cursor-pointer flex items-center" onClick={handelClickMenu}>
-       <div  className=''>
+       <div  className='text-[20px] text-[#03045E]'>
         {iconItem}
        </div>
-       <p className="select-none mr-2">
+       <p className="select-none mr-2 text-[#03045E]">
         {item}
        </p>
        </div>
@@ -101,7 +104,7 @@ const selectbyClick=(res:string,icon:React.ReactNode)=>{
         <ul className='text-center grid gap-1 py-2 text-[10px]'>
           {menuData.map((res,index)=>(
             <Link to={res.link}>
-                        <li key={index} onClick={()=>selectbyClick(res.title,res.icon)} className='select-none cursor-pointer py-2 hover:bg-[#A0DBE89E] hover:rounded-[15px]'>{res.title}</li>
+                        <li key={index} onClick={()=>selectbyClick(res.title,res.icon)} className='select-none cursor-pointer py-2 hover:bg-[#A0DBE89E] hover:rounded-[15px] text-[#03045E]'>{res.title}</li>
             </Link>
           ))}
         </ul>

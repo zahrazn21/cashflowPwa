@@ -14,11 +14,12 @@ interface T{
 export default function TableDailyPlan({data}:T) {
 
   return (
-    <div className='mx-1 flex items-center  justify-center'>
-      <table className='w-[100%]' >
-        <thead dir='rtl'>
+    <div className="w-[430px] h-auto max-h-[50vh] overflow-x-scroll overflow-y-auto flex justify-center">
+      <table  className="table-auto max-h-[50vh] max-w-[430px] border-collapse ">
+      <thead className="sticky top-0 bg-white z-10 w-[500px]">
           <tr className=''>
             {data.header.map((res,index)=>(
+              index<6 &&
                     <th className='' key={index} >
                  <p className={`mx-[2px] ${index==5 ? "text-[#03045E] ":" bg-[#03045E] text-white" } border-1 border-[#03045E] text-[8px] p-1  `}    
                 >
@@ -32,14 +33,15 @@ export default function TableDailyPlan({data}:T) {
         </thead>
         <tbody>
           {data.rows.map((res,index)=>(
+            
             <tr key={index}>
                 {res.data.map((result,i)=>(
-
+                 i<6&&
                   <td className='text-center ' key={i}>
                   <p className={`${i==5 && "bg-[#03045E] text-white"} flex items-center justify-center hover:bg-gray-200 cursor-pointer border-1 m-[2px] h-[38px]  p-1 text-[8px]` }
 
                 >
-                  <p className="w-[20px] text-center flex items-center justify-center">
+                  <p className=" text-center flex items-center justify-center">
                   {result}
                   </p>
                   </p>

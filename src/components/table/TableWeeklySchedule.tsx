@@ -1,12 +1,13 @@
 
 import 'react'
 import { useEffect, useState } from 'react';
-interface Schedule{
+interface Schedule {
   header: string[];
   rows: {
-    data: string[];
+    data: (string | { course: string; level: string })[];
   }[];
 };
+
 interface T{
   data:Schedule
 }
@@ -26,6 +27,7 @@ export default function TableWeeklySchedule({data}:T) {
         if (match) {
           setTest(match.color);  // اگر تطابق پیدا کرد رنگ را به‌روزرسانی می‌کنیم
         }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [data.rows]);  // فقط زمانی که data.rows تغییر کند، useEffect اجرا می‌شود
     
     
@@ -35,7 +37,7 @@ export default function TableWeeklySchedule({data}:T) {
         
   return (
     <div className='mx-1 flex items-center  justify-center'>
-      <table className='w-[100%]' >
+      <table className='w-[100%]' dir='rtl'>
         <thead >
           <tr className=''>
             {data.header.map((res,index)=>(
@@ -61,10 +63,23 @@ export default function TableWeeklySchedule({data}:T) {
                 {res.data.map((result,i)=>(
 
                   <td className='  text-center' key={i}>
-                  <p className={`${i==5 ? "border-[#03045E]":""} ${result.includes("کارشناسی ") ? "bg-[#0077B6] border-[#0077B6]": result.includes("کارشناسی‌ارشد") ? "bg-[#62B6CB] border-[#62B6CB]": result.includes("دکتری") ? "bg-[#48CAE4] border-[#48CAE4]" :"border-gray-400"}   hover:bg-gray-200 cursor-pointer border-2 m-[2px] h-[32px] flex items-center justify-center p-1 text-[7px]` }
+                         {typeof result === "object" ? (
+                  <>
+                    <p className={`${i==5 ? "border-[#03045E]":""}  ${result.level === "کارشناسی" ? "bg-[#0077B6] border-[#0077B6]" : 
+                     result.level === "کارشناسی ارشد" ? "bg-[#62B6CB] border-[#62B6CB]" : 
+                     result.level === "دکتری" ? "bg-[#48CAE4] border-[#48CAE4]" : "border-gray-400"} 
+                     ${i==0 ? "" : "text-white"} h-[36px] border-2 m-[2px]  flex items-center justify-center p-1 text-[6px]`}
+                     >
+                    {result.course}</p>
+                  </>
+                ) : (
+                  <p className={`border-[#03045E] h-[36px]   border-2 m-[2px]  flex items-center justify-center p-1 text-[6px]` }
+                  >{result}</p>
+                )}
+                  {/* <p className={`${i==5 ? "border-[#03045E]":""} ${result.includes("کارشناسی ") ? "bg-[#0077B6] border-[#0077B6]": result.includes("کارشناسی‌ارشد") ? "bg-[#62B6CB] border-[#62B6CB]": result.includes("دکتری") ? "bg-[#48CAE4] border-[#48CAE4]" :"border-gray-400"} ${i==0 ?"":"text-white"} h-[36px] hover:bg-gray-200 cursor-pointer border-2 m-[2px]  flex items-center justify-center p-1 text-[6px]` }
                 >
                   {result}
-                  </p>
+                  </p> */}
                   </td>
                 ))}
             </tr>

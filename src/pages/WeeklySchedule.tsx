@@ -1,51 +1,62 @@
 import  'react'
 import { FaRegDotCircle } from "react-icons/fa";
 // import TablePlan from '../components/table/TablePlan';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import TableWeeklySchedule from '../components/table/TableWeeklySchedule';
 import Date from '../components/ui/date';
+import IsLoding from '../utils/loading/IsLoding';
+import axios from 'axios';
 // import WeeklySchedule from './WeeklySchedule';
-
+interface Schedule {
+  header: string[];
+  rows: {
+    data: (string | { course: string; level: string })[];
+  }[];
+};
 export default function WeeklySchedule() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isloading,setIsLoading]=useState(true)
+   const [dataTable, setDataTable] = useState<Schedule>(
+      {
+        header: [],
+        rows:[]
+      }
+       ); 
+       
+  useEffect(() => {
+      
+    axios.get("http://localhost:3000/WeeklyScheduleData")
+      .then((res) => {
+        // نمایش داده‌های دریافتی برای بررسی
+        console.log("داده‌های دریافتی از API:", res.data);
 
-    const dataPlan={
-    header: ["17-19", "15-17", "13-15", "10-12", "8-10"],
-    rows:[
-        {
-          data:
-          ["دکتری","  ","  اندیده","افسیر قرآن",""," شنبه"],
-        },
-        {
-          data:
-          ["کارشناسی"," ","","","","یکشنبه"],
-        },
-        {
-          data:
-          [""," شنبه 8 تا10","کارشناسی‌ارشد"," ",""," دوشنبه"],
-        },
-        {
-          data:
-          ["کارشناسی‌ارشد"," شنبه 8 تا10"," "," ",""," سه شنبه"],
-        },
-        {
-          data:
-          ["کارشناسی "," ","","",""," چهارشنبه"],
-        },
-     
-   
-    ]
-  }
+        // بررسی وجود داده‌ها قبل از به روز رسانی state
+        if (res.data && res.data) {
+          setDataTable(res.data);
+
+        } else {
+          console.error("داده‌ها معتبر نیستند",res.data);
+        }
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.error("خطا در دریافت داده‌ها:", error);
+      });
+  }, []);
+
+
+  
+  
   const categirisFilter=[
 
     {
     title:"مقطع",
     datas:[
       {title:"همه", color:"#03045E"},
-      {title:"کارشناسی ", color:"#0077B6"},
-      {title:"کارشناسی‌ارشد", color:"#62B6CB"},
+      {title:"کارشناسی", color:"#0077B6"},
+      {title:"کارشناسی ارشد", color:"#62B6CB"},
       {title:"دکتری", color:"#48CAE4"}
     ]
     },
@@ -55,10 +66,9 @@ export default function WeeklySchedule() {
 
   const [selectedFilters, setSelectedFilters] = useState({
     filter1: "",
-
-
-
   });
+
+  
 // تابعی برای تغییر مقدار فیلترها
 const handleSelectChange = (key:string, value:string) => {
 setSelectedFilters((prev) => ({ ...prev, [key]: value }));
@@ -68,20 +78,31 @@ if(value=="همه"){
 };
 
 // فیلتر کردن داده‌ها بر اساس انتخاب‌های کاربر
-const filteredProducts = dataPlan.rows.filter((row) => {
-// چک کردن فیلترها
-const filterMatch = Object.values(selectedFilters).every((filter) =>
-  filter ? row.data.some((cell) => cell.toLowerCase().includes(filter.toLowerCase())) : true
-);
+const filteredProducts = dataTable.rows.map((row) => {
+  // فیلتر کردن هر سلول از ردیف به صورت جداگانه
+  const filteredCells = row.data.map((cell, index) => {
+    if (index === 0) return cell; // (روزهای هفته)
 
-// چک کردن جستجو
-const searchMatch = searchTerm
-  ? row.data.some((cell) => cell.toLowerCase().includes(searchTerm.toLowerCase())) 
-  : true;
+    const filterMatch = Object.values(selectedFilters).every((filter) =>
+      filter
+        ? typeof cell === "object" &&
+          (cell.course.toLowerCase().includes(filter.toLowerCase()) ||
+            cell.level === filter)    
+        : true
+    );
 
-return filterMatch && searchMatch; // هر دو باید true باشن
-;
+    const searchMatch = searchTerm
+      ? typeof cell === "object" &&
+        (cell.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          cell.level.toLowerCase().includes(searchTerm.toLowerCase()))
+      : true;
+
+    return filterMatch && searchMatch ? cell : ""; 
+  });
+
+  return { ...row, data: filteredCells };
 });
+
 
 
 return (
@@ -146,13 +167,31 @@ return (
 
 
 
-          {filteredProducts.length>0 ? 
-          <TableWeeklySchedule data={{ header: dataPlan.header, rows: filteredProducts }}></TableWeeklySchedule>
+          {/* {filteredProducts.length>0 ? 
+          <TableWeeklySchedule data={{ header: dataTable.header, rows: filteredProducts }}></TableWeeklySchedule>
              :
              // <TablePlan data={data}></TablePlan>
            "پیدا نشد"
-             }
+             } */}
+        {isloading? 
+               
+               
+               <>
+               <IsLoding></IsLoding>
+               </>   
+               
+             
+           :
+           filteredProducts.length>0  ? 
+           <TableWeeklySchedule data={{ header: dataTable.header, rows: filteredProducts }}></TableWeeklySchedule>
+            
+          :
+          // <TablePlan data={data}></TablePlan>
+          <div className='text-center'>
+          پیدا نشد
+         </div>                   
 
+           }
 
 
    

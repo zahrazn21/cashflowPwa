@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom'
 
 export default function HomePage() {
   return (
-    <div className='bg-[#BEE9E8] flex items-center justify-center'>
-         <div className=" my-10 grid max-w-[430px] min-h-[512px] ">
+    <div className='bg-[#03045E] flex items-center justify-center'>
+         <div className="w-[345px] flex items-center justify-center h-[631px] bg-[rgb(255,255,255,.77)] rounded-[30px]  my-10  max-w-[430px] min-h-[512px] ">
+              <div className='h-[100%] grid gap-10 py-4'>
+
                 <div className="logo size-[219px]">
                   <img src={logoUni} alt="" />
                 </div>
@@ -24,7 +26,8 @@ export default function HomePage() {
                 <div>
                     <SerchInput size='224' rounded='15px' color='#03045E'></SerchInput>
                 </div>
-                
+                </div>
+      
          </div>
     </div>
   )

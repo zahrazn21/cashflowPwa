@@ -1,52 +1,74 @@
 import  'react'
 import { FaRegDotCircle } from "react-icons/fa";
 // import TablePlan from '../components/table/TablePlan';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import TableDailyPlan from '../components/table/TableDailyPlan';
 import Date from '../components/ui/date';
+import axios from 'axios'
+import IsLoding from '../utils/loading/IsLoding';
+
 // import WeeklySchedule from './WeeklySchedule';
 
+interface Schedule{
+  header: string[];
+  rows: {
+    data: string[];
+  }[];
+};
+
 export default function DailySchedule() {
+  const [isloading,setIsLoading]=useState(true)
+  const [dataTable, setDataTable] = useState<Schedule>({
+    header: [],
+    rows: [],
+  }); 
+  useEffect(() => {
+    axios.get("http://localhost:3000/DailyScheduleData")
+      .then((res) => {
+        // نمایش داده‌های دریافتی برای بررسی
+        console.log("داده‌های دریافتی از API:", res.data);
+
+        // بررسی وجود داده‌ها قبل از به روز رسانی state
+        if (res.data && res.data[0]) {
+          setDataTable(res.data[0]);
+          setFilteredCourses(res.data[0]);
+
+        } else {
+          console.error("داده‌ها معتبر نیستند");
+        }
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.error("خطا در دریافت داده‌ها:", error);
+      });
+  }, []);
+
+  console.log("data",dataTable);
+  
   const [searchTerm, setSearchTerm] = useState("");
 
-  const dataDailPlan={
-    
-      "header": ["17 تا 19", "15 تا 17", "13 تا 15", "10-12", "8 تا 10","کلاس"],
-     "rows": [
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A1"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A2"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A3"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A1"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A2"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A3"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A1"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A2"] },
-  { "data": ["جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "جبرخطی یزدان‌پناه", "A3"] }
-]
-
     
     
-  }
   const categirisFilter=[
     {
     title:"دانشکده",
-    datas:["همه","ادبیات","علوم داده","علوم پایه","پتروشیمی","مهندسی"]
+    datas:["همه","علوم", "مهندسی", "هنر", "علوم", "مهندسی", "حقوق", "علوم", "مهندسی", "ادبیات", "هنر"]
     },
     {
         title:"رشته",
-        datas:["همه","کارشناسی","کارشناسی‌ارشد"]
+        datas:["همه",
+          "ریاضی", "کامپیوتر", "تاریخ هنر", "شیمی", "نرم‌افزار", "حقوق بین‌الملل", "شیمی", "عمران", "زبان‌شناسی", "ادبیات"
+        ]
         },
     {
     title:"دروس",
-    datas:[
-      "همه","اصلی","تخصصی","پایه","اختیاری","عمومی"
-    ]
+    datas:[ "همه","اصلی", "تخصصی", "عمومی", "پایه", "اصلی", "تخصصی", "اصلی", "عمومی", "پایه", "تخصصی" ]
     },
     {
     title:"مقطع",
-    datas:["همه","کارشناسی","کارشناسی‌ارشد","دکتری"]
+    datas:["همه","کارشناسی", "کارشناسی", "کارشناسی", "کارشناسی", "کارشناسی ارشد", "کارشناسی ارشد", "کارشناسی", "کارشناسی", "کارشناسی ارشد", "دکتری"   ]
     },
     
 ]
@@ -60,35 +82,113 @@ export default function DailySchedule() {
 
 
   });
-// تابعی برای تغییر مقدار فیلترها
-const handleSelectChange = (key:string, value:string) => {
-setSelectedFilters((prev) => ({ ...prev, [key]: value }));
-if(value=="همه"){
-  setSelectedFilters((prev) => ({ ...prev, [key]: " " }));
-}
-};
 
-// فیلتر کردن داده‌ها بر اساس انتخاب‌های کاربر
-const filteredProducts = dataDailPlan.rows.filter((row) => {
-// چک کردن فیلترها
-const filterMatch = Object.values(selectedFilters).every((filter) =>
-  filter 
-? row.data.some((cell) =>
-  typeof cell === "string" && cell.toLowerCase().includes(filter.toLowerCase())
-)
-: true
-);
+//filter and search
+  const handleSelectChange = (key:string, value:string) => {
+    setSelectedFilters((prev) => ({ ...prev, [key]: value }));
+    if(value=="همه"){
+      setSelectedFilters((prev) => ({ ...prev, [key]: " " }));
+    }
+  };
 
-// چک کردن جستجو
-const searchMatch = searchTerm
-? row.data.some((cell) =>
-  typeof cell === "string" && cell.toLowerCase().includes(searchTerm.toLowerCase())
-)
-: true;
+  const [filteredCourses, setFilteredCourses] = useState<{ data: string[] }[]>([]);
 
-return filterMatch && searchMatch; // هر دو باید true باشن
-;
-});
+  const [filterClick,setFilterClick]=useState(false)
+
+  // فیلتر کردن داده‌ها
+  const filterCourses = () => {
+    setFilterClick(true)
+    const result = dataTable.rows.filter(course => {
+      const courseMoqat = course.data[9];  // مقطع درس
+      const courseNoe = course.data[8];    // نوع درس
+      const courseDaneshkadeh = course.data[6];    // دانشکده
+      const courseReshteh = course.data[7];    // رشته
+
+   
+      // مقایسه مقطع و نوع با ورودی‌های کاربر
+      return (
+        (selectedFilters.filter3 ? courseNoe === selectedFilters.filter3 : true) &&
+        (selectedFilters.filter2 ? courseReshteh === selectedFilters.filter2 : true) &&
+        (selectedFilters.filter1 ? courseDaneshkadeh === selectedFilters.filter1 : true)&&
+        (selectedFilters.filter4 ? courseMoqat === selectedFilters.filter4 : true)
+
+      );
+    });
+    setFilteredCourses(result);  // آپدیت کردن وضعیت با داده‌های فیلتر شده
+  };
+
+
+  
+  // فیلتر کردن داده‌ها بر اساس انتخاب‌های کاربر
+  useEffect(()=>{
+    const filteredProducts = dataTable.rows.filter((row) => {
+
+      setFilterClick(true)
+
+      // چک کردن جستجو
+      const searchMatch = searchTerm
+        ? row.data.some((cell) => cell.toLowerCase().includes(searchTerm.toLowerCase())) 
+        : true;
+  
+      return  searchMatch; // هر دو باید true باشن
+      ;
+    });
+    setFilteredCourses(filteredProducts);
+    console.log("setfilter2222",filteredCourses);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[dataTable,searchTerm])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // تابعی برای تغییر مقدار فیلترها
+// const handleSelectChange = (key:string, value:string) => {
+// setSelectedFilters((prev) => ({ ...prev, [key]: value }));
+// if(value=="همه"){
+//   setSelectedFilters((prev) => ({ ...prev, [key]: " " }));
+// }
+// };
+
+// // فیلتر کردن داده‌ها بر اساس انتخاب‌های کاربر
+// const filteredProducts = dataTable.rows.filter((row) => {
+// // چک کردن فیلترها
+// const filterMatch = Object.values(selectedFilters).every((filter) =>
+//   filter 
+// ? row.data.some((cell) =>
+//   typeof cell === "string" && cell.toLowerCase().includes(filter.toLowerCase())
+// )
+// : true
+// );
+
+// // چک کردن جستجو
+// const searchMatch = searchTerm
+// ? row.data.some((cell) =>
+//   typeof cell === "string" && cell.toLowerCase().includes(searchTerm.toLowerCase())
+// )
+// : true;
+
+// return filterMatch && searchMatch; // هر دو باید true باشن
+// ;
+// });
 
 
 return (
@@ -113,7 +213,7 @@ return (
     
     
           {/*    filter text    */}
-          <div className='flex items-center mx-1' dir='rtl'>
+          <div className='flex items-center mx-1 cursor-pointer' dir='rtl' onClick={filterCourses}>
             <div className='text-[#03045E]'>
             <CiFilter></CiFilter>
             </div>
@@ -135,11 +235,11 @@ return (
            name={res.title} id={res.title}
            >
   
-           {res.datas.map((result)=>(
+           {res.datas.map((result,j)=>(
            
             <option
           dir='rtl'
-          className='bg-[#CAF0F8]  border-none outline-none text-[10px]' value={result}>{result}</option>
+          className='bg-[#CAF0F8]  border-none outline-none text-[10px]' value={j==0 ? "":result}>{result}</option>
          
         
          ))}       
@@ -154,15 +254,30 @@ return (
 
 
 
-          {filteredProducts.length>0 ? 
-          <TableDailyPlan data={{ header: dataDailPlan.header, rows: filteredProducts }}></TableDailyPlan>
-             :
-             // <TablePlan data={data}></TablePlan>
-           "پیدا نشد"
-             }
+         
 
-
-
+                   {isloading? 
+                          
+                          
+                          <>
+                          
+                          <IsLoding></IsLoding>
+                          </>   
+                          
+                          :  
+                          filterClick==false ? 
+                                  <TableDailyPlan data={dataTable}/>
+                      :
+                      filteredCourses.length>0  ? 
+                       <TableDailyPlan data={{ header: dataTable.header, rows: filteredCourses }} />
+                       
+                     :
+                     // <TablePlan data={data}></TablePlan>
+                     <div className='text-center'>
+                     پیدا نشد
+                    </div>                   
+           
+                      }
    
           {/* <Routes>
             <Route path={"weeklySchedule"} element={<WeeklySchedule></WeeklySchedule>}></Route>

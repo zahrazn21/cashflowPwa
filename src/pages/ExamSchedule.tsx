@@ -1,59 +1,114 @@
 import  'react'
 import { FaRegDotCircle } from "react-icons/fa";
 // import TablePlan from '../components/table/TablePlan';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 // import TableProfessors from '../components/table/TableProfessors';
 // import { Link } from 'react-router-dom';
 import TableExamSchedule from '../components/table/TableExamSchedule';
 import Date from '../components/ui/date';
+import axios from 'axios'
 
+// import WeeklySchedule from './WeeklySchedule';
+
+interface Schedule{
+  header: string[];
+  rows: {
+    data: string[];
+  }[];
+};
 export default function ExamSchedule() {
     const [searchTerm, setSearchTerm] = useState("");
-
-    const dataPlan={
-        header:
-          ["نام استاد","نام درس","برنامه امتحانی","دانشکده","مقطع"],
-          rows:[
-            { "data": ["علی اندیده", "تفسیر قرآن", "سالن امتحانات", "ادبیات", "کارشناسی"] },
-            { "data": ["ماشاله عالی‌حسینی", "انقلاب اسلامی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
-            { "data": ["طاهر یزدان‌پناه", "جبرخطی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
+    const [dataTable, setDataTable] = useState<Schedule>({
+      header: [],
+      rows: [],
+    });
+   
+    useEffect(() => {
+      axios.get("http://localhost:3000/ExamScheduleData")
+        .then((res) => {
+          // نمایش داده‌های دریافتی برای بررسی
+          console.log("داده‌های دریافتی از API:", res.data);
+  
+          // بررسی وجود داده‌ها قبل از به روز رسانی state
+          if (res.data && res.data[0]) {
+            setDataTable(res.data[0
+              
+            ]);
+          } else {
+            console.error("داده‌ها معتبر نیستند");
+          }
+        })
+        .catch((error) => {
+          console.error("خطا در دریافت داده‌ها:", error);
+        });
+    }, []);
+    // const dataPlan={
+    //     header:
+    //       ["نام استاد","نام درس","برنامه امتحانی","دانشکده","مقطع"],
+    //       rows:[
+    //         { "data": ["علی اندیده", "تفسیر قرآن", "سالن امتحانات", "ادبیات", "کارشناسی"] },
+    //         { "data": ["ماشاله عالی‌حسینی", "انقلاب اسلامی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
+    //         { "data": ["طاهر یزدان‌پناه", "جبرخطی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
           
-            { "data": ["وحید میگلی", "جبرخطی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
-            { "data": ["حبیب رستمی", "داده‌کاوی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
-            { "data": ["علی اندیده", "تفسیر قرآن", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
+    //         { "data": ["وحید میگلی", "جبرخطی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
+    //         { "data": ["حبیب رستمی", "داده‌کاوی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
+    //         { "data": ["علی اندیده", "تفسیر قرآن", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
           
-            { "data": ["علی اندیده", "تفسیر قرآن", "سالن امتحانات", "ادبیات", "کارشناسی"] },
-            { "data": ["ماشاله عالی‌حسینی", "انقلاب اسلامی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
-            { "data": ["ماشاله عالی‌حسینی", "انقلاب اسلامی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
+    //         { "data": ["علی اندیده", "تفسیر قرآن", "سالن امتحانات", "ادبیات", "کارشناسی"] },
+    //         { "data": ["ماشاله عالی‌حسینی", "انقلاب اسلامی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
+    //         { "data": ["ماشاله عالی‌حسینی", "انقلاب اسلامی", "سالن امتحانات", "ادبیات", "کارشناسی"] },
           
-            { "data": ["طاهر یزدان‌پناه", "جبرخطی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
-            { "data": ["وحید میگلی", "جبرخطی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
-            { "data": ["حبیب رستمی", "داده‌کاوی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] }
-          ]
+    //         { "data": ["طاهر یزدان‌پناه", "جبرخطی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
+    //         { "data": ["وحید میگلی", "جبرخطی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] },
+    //         { "data": ["حبیب رستمی", "داده‌کاوی", "سالن امتحانات", "علوم‌داده", "کارشناسی"] }
+    //       ]
           
           
-    }
+    // }
     const categirisFilter=[
         {
         title:"دانشکده",
-        datas:["همه","ادبیات","علوم داده","علوم پایه","پتروشیمی","مهندسی"]
-        },
-        {
-            title:"رشته",
-            datas:["همه","کارشناسی","کارشناسی‌ارشد"]
+        datas:["همه",
+          "دانشکده مدیریت",
+          "دانشکده علوم کامپیوتر",
+          "دانشکده اقتصاد",
+          "دانشکده زبان‌شناسی",
+          "دانشکده فیزیک",
+          "دانشکده مهندسی برق",
+          "دانشکده شیمی",
+          "دانشکده ریاضی"]
             },
         {
-        title:"دروس",
+            title:"رشته",
+            datas:["همه",
+              "مدیریت",
+              "کامپیوتر",
+              "اقتصاد",
+              "زبان‌شناسی",
+              "فیزیک",
+              "مهندسی برق",
+              "شیمی",
+              "ریاضی"
+                        ]
+            },
+        {
+        title:"نوع درس",
         datas:[
-          "همه","اصلی","تخصصی","پایه","اختیاری","عمومی"
-        ]
+          "همه",
+          "اصلی",
+          "تخصصی",
+          "عمومی",
+          "پایه"        ]
         },
         {
         title:"مقطع",
-        datas:["همه","کارشناسی","کارشناسی‌ارشد","دکتری"]
-        },
+        datas:["همه",
+          "کارشناسی",
+          "کارشناسی ارشد",
+          "دکتری"]
+          },
         
     ]
 
@@ -75,7 +130,7 @@ export default function ExamSchedule() {
   };
 
   // فیلتر کردن داده‌ها بر اساس انتخاب‌های کاربر
-  const filteredProducts = dataPlan.rows.filter((row) => {
+  const filteredProducts = dataTable.rows.filter((row) => {
     // چک کردن فیلترها
     const filterMatch = Object.values(selectedFilters).every((filter) =>
       filter ? row.data.some((cell) => cell.toLowerCase().includes(filter.toLowerCase())) : true
@@ -156,10 +211,12 @@ export default function ExamSchedule() {
 
 
               {filteredProducts.length>0 ? 
-              <TableExamSchedule data={{ header: dataPlan.header, rows: filteredProducts }}></TableExamSchedule>
+              <TableExamSchedule data={{ header: dataTable.header, rows: filteredProducts }}></TableExamSchedule>
                  :
                  // <TablePlan data={data}></TablePlan>
-               "پیدا نشد"
+                 <div className='text-center'>
+                  پیدا نشد
+                 </div>
                  }
 
 
