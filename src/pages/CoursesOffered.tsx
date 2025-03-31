@@ -30,12 +30,11 @@ export default function CoursesOffered() {
        );
    
        useEffect(() => {
-        axios.get("http://localhost:3000/CoursesOfferedData")
-          .then((res) => {
-            console.log("داده‌های دریافتی از API:", res.data);
-      
-            if (res.data && res.data[0]) {
-              const fetchedData = res.data[0];
+        axios.get(`${import.meta.env.BASE_URL}data.json`)
+               .then((res) => {
+            
+            if (res.data.CoursesOfferedData && res.data.CoursesOfferedData?.[0]) {
+              const fetchedData = res.data.CoursesOfferedData?.[0];
       
               // ذخیره داده‌ها در LocalStorage
               localStorage.setItem("CoursesOfferedData", JSON.stringify(fetchedData));
@@ -43,7 +42,7 @@ export default function CoursesOffered() {
               setDataTable(fetchedData);
               setFilteredCourses(fetchedData);
             } else {
-              console.error("داده‌ها معتبر نیستند:", res.data);
+              console.error(" معتبر نیستند:", res.data);
             }
             setIsLoading(false);
           })

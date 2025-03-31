@@ -43,8 +43,8 @@ export default defineConfig({
         ],
       },
       manifest: {
-        name: "CashFlow",
-        short_name: "casfflow",
+        name: "Curriculum",
+        short_name: "Curriculum",
         start_url: "/",
         display: "standalone",
         background_color: "#ffffff",

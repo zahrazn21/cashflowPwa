@@ -65,7 +65,7 @@ export default function WeeklySchedule() {
       } else {
         console.log("🌀 دریافت داده‌ها از سرور...");
 
-        axios.get("http://localhost:3000/WeeklyScheduleData")
+        axios.get("/db.json")
           .then(async (res) => {
             console.log("🌐 داده‌های دریافتی از API:", res.data);
 

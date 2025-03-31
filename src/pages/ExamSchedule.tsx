@@ -29,7 +29,7 @@ export default function ExamSchedule() {
       axios.get("http://localhost:3000/ExamScheduleData")
         .then((res) => {
           // نمایش داده‌های دریافتی برای بررسی
-          console.log("داده‌های دریافتی از API:", res.data);
+          console.log("داده‌های دریافتی از API22:", res.data);
   
           // بررسی وجود داده‌ها قبل از به روز رسانی state
           if (res.data && res.data[0]) {
