@@ -8,7 +8,13 @@
   "baseUrl": "./src",
   "paths": {
     "@/*": ["*"]
-  }
+  },
+  "typeRoots": ["./node_modules/@types", "./src/types"],
+  "forceConsistentCasingInFileNames": true,
+  "lib": ["dom", "es2015", "webworker"],
+  "strict": true,
+  "moduleResolution": "node",
+  "target": "es6"
 }
 
 }

@@ -24,6 +24,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
     "google-icon": "^1.0.1",
+    "idb": "^8.0.2",
     "lucide-react": "^0.476.0",
     "material-icons": "^1.13.14",
     "moment-jalaali": "^0.10.4",
