@@ -87,30 +87,34 @@ const selectbyClick=(res:string,icon:React.ReactNode)=>{
    
 
   return (
-    <div className=''>
+    <div className='overflow-hidden text-center'>
       {/*    menue  */}
-      <div  dir='rtl' className="relative mt-5 mb-10 flex items-center justify-center w-[430px] h-[38px] bg-[#CAE9FF]">
-       <div className="cursor-pointer flex items-center" onClick={handelClickMenu}>
-       <div  className='text-[20px] text-[#03045E]'>
-        {iconItem}
-       </div>
-       <p className="select-none mr-2 text-[#03045E]">
-        {item}
-       </p>
-       </div>
+      <div className="flex justify-center items-center    ">
+      <div  dir='rtl' className="relative mt-5 mb-10 flex items-center justify-center w-[375px] xl:w-[430px] h-[38px] bg-[#CAE9FF]">
       
-       {clickMenu && 
-        <div className="boxMenu absolute z-20 top-[35px] mt-1 w-[217px] h-[146px] rounded-[15px] bg-[#CAF0F8]">
-        <ul className='text-center grid gap-1 py-2 text-[10px]'>
-          {menuData.map((res,index)=>(
-            <Link to={res.link}>
-                        <li key={index} onClick={()=>selectbyClick(res.title,res.icon)} className='select-none cursor-pointer py-2 hover:bg-[#A0DBE89E] hover:rounded-[15px] text-[#03045E]'>{res.title}</li>
-            </Link>
-          ))}
-        </ul>
-        </div>
-      }
+      <div className="cursor-pointer flex items-center" onClick={handelClickMenu}>
+      <div  className='text-[20px] text-[#03045E]'>
+       {iconItem}
       </div>
+      <p className="select-none mr-2 text-[#03045E]">
+       {item}
+      </p>
+     </div>
+     
+      {clickMenu && 
+       <div className="boxMenu absolute z-20 top-[35px] mt-1 w-[217px] h-[146px] rounded-[15px] bg-[#CAF0F8]">
+       <ul className='text-center grid gap-1 py-2 text-[10px]'>
+         {menuData.map((res,index)=>(
+           <Link to={res.link}>
+                       <li key={index} onClick={()=>selectbyClick(res.title,res.icon)} className='select-none cursor-pointer py-2 hover:bg-[#A0DBE89E] hover:rounded-[15px] text-[#03045E]'>{res.title}</li>
+           </Link>
+         ))}
+       </ul>
+       </div>
+     }
+     </div>
+      </div>
+    
      
 
       {/* {router} */}

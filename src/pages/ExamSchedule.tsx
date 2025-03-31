@@ -189,7 +189,7 @@ export default function ExamSchedule() {
         
         
               {/*    filter text    */}
-              <div className='flex items-center mx-1' dir='rtl'>
+              <div className='flex items-center  mr-5' dir='rtl'>
                 <div className='text-[#03045E]'>
                 <CiFilter></CiFilter>
                 </div>

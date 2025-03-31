@@ -61,8 +61,9 @@ export default function TableProfessors({data}:T) {
   ]
   console.log(colorHead[1])
   return (
-    <div className="w-[430px] h-auto max-h-[50vh] overflow-x-scroll overflow-y-auto flex justify-center">
-      <table dir='rtl' className="table-auto max-h-[50vh] max-w-[430px] border-collapse ">
+    <div className="flex justify-center">
+         <div className="w-[370px] xl:w-[420px] h-auto max-h-[50vh] overflow-x-scroll overflow-y-auto flex justify-center">
+      <table dir='rtl' className="table-auto max-h-[50vh] w-[370px] xl:w-[420px] max-w-[430px] border-collapse ">
       <thead className="sticky top-0 bg-white z-10 w-[500px]">
       <tr className=''>
             {data.header.map((res,index)=>(
@@ -96,6 +97,8 @@ export default function TableProfessors({data}:T) {
         </tbody>
       </table>
     </div>
+    </div>
+ 
   )
 }
 

@@ -21,7 +21,8 @@ export default function TablePlan({ data }: T) {
   // ];
 
   return (
-    <div className="w-[432px] h-auto max-h-[70vh] overflow-x-scroll overflow-y-auto">
+    <div className='flex justify-center'>
+  <div className="w-[370px] xl:w-[420px] h-auto max-h-[50vh] overflow-x-scroll overflow-y-auto">
       {/* <table className="table-auto w-[800px] border-collapse "> */}
       <table dir='rtl' className="table-auto  border-collapse ">
 
@@ -63,5 +64,7 @@ export default function TablePlan({ data }: T) {
         </tbody>
       </table>
     </div>
+    </div>
+  
   );
 }

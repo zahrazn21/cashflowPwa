@@ -36,8 +36,9 @@ export default function TableWeeklySchedule({data}:T) {
         
         
   return (
-    <div className='mx-1 flex items-center  justify-center'>
-      <table className='w-[100%]' dir='rtl'>
+    <div className="flex justify-center">
+  <div className="w-[370px] xl:w-[420px] h-auto max-h-[50vh] overflow-x-scroll overflow-y-auto">
+  <table dir='rtl' className="table-auto max-h-[50vh] w-[370px] xl:w-[420px] max-w-[430px] border-collapse ">
         <thead >
           <tr className=''>
             {data.header.map((res,index)=>(
@@ -88,6 +89,8 @@ export default function TableWeeklySchedule({data}:T) {
 
       </table>
     </div>
+    </div>
+   
   )
 }
 

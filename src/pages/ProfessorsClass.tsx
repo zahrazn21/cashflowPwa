@@ -279,7 +279,7 @@ export default function ProfessorsClass() {
         
         
               {/*    filter text    */}
-              <div className='flex items-center mx-1 cursor-pointer ' dir='rtl' onClick={filterCourses}>
+              <div className='flex items-center mr-5 cursor-pointer ' dir='rtl' onClick={filterCourses}>
                 <div className='text-[#03045E]'>
                 <CiFilter></CiFilter>
                 </div>

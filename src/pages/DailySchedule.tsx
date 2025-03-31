@@ -226,13 +226,14 @@ return (
     
     
           {/*    filter text    */}
-          <div className='flex items-center mx-1 cursor-pointer' dir='rtl' onClick={filterCourses}>
+          <div className='flex items-center mr-5  mb-2 cursor-pointer' dir='rtl' onClick={filterCourses}>
             <div className='text-[#03045E]'>
             <CiFilter></CiFilter>
             </div>
               <p className='mr-1 text-[10px]'>اعمال فیلتر</p>
           </div>
-   <div className="flex justify-around mt-1 mb-5 items-center" dir='rtl'>
+          <div className="flex justify-center">
+          <div className="flex justify-around mt-1 mb-5 items-center w-[360px] md:w-[430px]" dir='rtl'>
         {categirisFilter.map((res,index)=>(
           <div className='grid place-content-center text-center justify-items-center'>
           <label
@@ -262,7 +263,9 @@ return (
         </div>
   
          ))}
-       </div>
+          </div>
+          </div>
+       
 
 
 
