@@ -25,14 +25,16 @@ export default function DailySchedule() {
     rows: [],
   }); 
   useEffect(() => {
-    axios.get("http://localhost:3000/DailyScheduleData")
+    // axios.get("http://localhost:3000/DailyScheduleData")
+    axios.get(`${import.meta.env.BASE_URL}data.json`)
       .then((res) => {
         // نمایش داده‌های دریافتی برای بررسی
         console.log("داده‌های دریافتی از API:", res.data);
 
-        // بررسی وجود داده‌ها قبل از به روز رسانی state
-        if (res.data && res.data[0]) {
-          const fetchedData=res.data[0]
+        // if (res.data && res.data[0]) {
+        //   const fetchedData=res.data[0]
+        if (res.data.DailyScheduleData && res.data.DailyScheduleData?.[0]) {
+          const fetchedData = res.data.DailyScheduleData?.[0];
           localStorage.setItem("DailyScheduleData",JSON.stringify(fetchedData))
           setDataTable(fetchedData);
           setFilteredCourses(fetchedData);

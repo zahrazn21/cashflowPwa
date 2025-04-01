@@ -26,14 +26,18 @@ export default function ExamSchedule() {
     });
    
     useEffect(() => {
-      axios.get("http://localhost:3000/ExamScheduleData")
+      // axios.get("http://localhost:3000/ExamScheduleData")
+      axios.get(`${import.meta.env.BASE_URL}data.json`)
         .then((res) => {
           // نمایش داده‌های دریافتی برای بررسی
           console.log("داده‌های دریافتی از API22:", res.data);
   
           // بررسی وجود داده‌ها قبل از به روز رسانی state
-          if (res.data && res.data[0]) {
-            const fetchedData=res.data[0]
+          // if (res.data && res.data[0]) {
+          //   const fetchedData=res.data[0]
+          if (res.data.ExamScheduleData && res.data.ExamScheduleData?.[0]) {
+            const fetchedData = res.data.ExamScheduleData?.[0];
+            
             localStorage.setItem("ExamScheduleData",JSON.stringify(fetchedData))
             setDataTable(fetchedData);
 

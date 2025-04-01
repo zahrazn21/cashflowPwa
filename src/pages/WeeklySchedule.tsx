@@ -9,7 +9,6 @@ import Date from '../components/ui/date';
 import IsLoding from '../utils/loading/IsLoding';
 import axios from 'axios';
 // import WeeklySchedule from './WeeklySchedule';
-import { saveData, getData } from "./../data/data"; // همون فایل db.ts که قبلا درست کردیم
 
 interface Schedule {
   header: string[];
@@ -27,69 +26,73 @@ export default function WeeklySchedule() {
       }
        ); 
        
-  // useEffect(() => {
-      
-  //   axios.get("http://localhost:3000/WeeklyScheduleData")
-  //     .then((res) => {
-  //       // نمایش داده‌های دریافتی برای بررسی
-  //       console.log("داده‌های دریافتی از API:", res.data);
-
-  //       // بررسی وجود داده‌ها قبل از به روز رسانی state
-  //       if (res.data && res.data) {
-  //         const fetchedData = res.data;
-  //         localStorage.setItem("WeeklyScheduleData", JSON.stringify(fetchedData));
-    
-  //         setDataTable(fetchedData);
-  //       } else {
-  //         console.error("داده‌ها معتبر نیستند",res.data);
-  //       }
-  //       setIsLoading(false)
-  //     })
-  //     .catch((error) => {
-  //       console.error("خطا در دریافت داده‌ها:", error);
-  //     });
-  // }, []);
-
-
-
-
   useEffect(() => {
-    const fetchData = async () => {
-      // اول بررسی می‌کنیم که آیا داده‌ها توی IndexedDB موجود هست یا نه
-      const cachedData = await getData("myStore", "WeeklyScheduleData");
+      
+    // axios.get("http://localhost:3000/WeeklyScheduleData")
+    axios.get(`${import.meta.env.BASE_URL}data.json`)
 
-      if (cachedData) {
-        console.log("📦 داده‌های کش‌شده از IndexedDB:", cachedData);
-        setDataTable(cachedData);
-        setIsLoading(false);
-      } else {
-        console.log("🌀 دریافت داده‌ها از سرور...");
+      .then((res) => {
+        // نمایش داده‌های دریافتی برای بررسی
+        console.log("داده‌های دریافتی از API:", res.data);
 
-        axios.get("/db.json")
-          .then(async (res) => {
-            console.log("🌐 داده‌های دریافتی از API:", res.data);
-
-            if (res.data) {
-              const fetchedData = res.data;
-
-              // ذخیره داده‌ها توی IndexedDB
-              await saveData("myStore", "WeeklyScheduleData", fetchedData);
-
-              setDataTable(fetchedData);
-            } else {
-              console.error("❌ داده‌ها معتبر نیستند", res.data);
-            }
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.error("❌ خطا در دریافت داده‌ها:", error);
-            setIsLoading(false);
-          });
-      }
-    };
-
-    fetchData();
+        // بررسی وجود داده‌ها قبل از به روز رسانی state
+        // if (res.data && res.data) {
+        //   const fetchedData = res.data;
+          if (res.data.WeeklyScheduleData && res.data.WeeklyScheduleData) {
+            const fetchedData = res.data.WeeklyScheduleData;
+          localStorage.setItem("WeeklyScheduleData", JSON.stringify(fetchedData));
+    
+          setDataTable(fetchedData);
+        } else {
+          console.error("داده‌ها معتبر نیستند",res.data);
+        }
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.error("خطا در دریافت داده‌ها:", error);
+      });
   }, []);
+
+
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     // اول بررسی می‌کنیم که آیا داده‌ها توی IndexedDB موجود هست یا نه
+  //     const cachedData = await getData("myStore", "WeeklyScheduleData");
+
+  //     if (cachedData) {
+  //       console.log("📦 داده‌های کش‌شده از IndexedDB:", cachedData);
+  //       setDataTable(cachedData);
+  //       setIsLoading(false);
+  //     } else {
+  //       console.log("🌀 دریافت داده‌ها از سرور...");
+
+  //       axios.get("/db.json")
+  //         .then(async (res) => {
+  //           console.log("🌐 داده‌های دریافتی از API:", res.data);
+
+  //           if (res.data) {
+  //             const fetchedData = res.data;
+
+  //             // ذخیره داده‌ها توی IndexedDB
+  //             await saveData("myStore", "WeeklyScheduleData", fetchedData);
+
+  //             setDataTable(fetchedData);
+  //           } else {
+  //             console.error("❌ داده‌ها معتبر نیستند", res.data);
+  //           }
+  //           setIsLoading(false);
+  //         })
+  //         .catch((error) => {
+  //           console.error("❌ خطا در دریافت داده‌ها:", error);
+  //           setIsLoading(false);
+  //         });
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
 
 

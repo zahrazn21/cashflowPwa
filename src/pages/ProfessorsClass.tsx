@@ -66,14 +66,18 @@ export default function ProfessorsClass() {
        );    
     useEffect(() => {
       
-      axios.get("http://localhost:3000/ProfessorsClassِData")
+      // axios.get("http://localhost:3000/ProfessorsClassِData")
+      axios.get(`${import.meta.env.BASE_URL}data.json`)
         .then((res) => {
           // نمایش داده‌های دریافتی برای بررسی
           console.log("داده‌های دریافتی از API:", res.data);
   
           // بررسی وجود داده‌ها قبل از به روز رسانی state
-          if (res.data && res.data[0]) {
-            const fetchedData = res.data[0];
+          // if (res.data && res.data[0]) {
+          //   const fetchedData = res.data[0];
+          
+          if (res.data.ProfessorsClassِData && res.data.ProfessorsClassِData?.[0]) {
+            const fetchedData = res.data.ProfessorsClassِData?.[0];
             localStorage.setItem("ProfessorsClassِData", JSON.stringify(fetchedData));
       
             setDataTable(fetchedData);
