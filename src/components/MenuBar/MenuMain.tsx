@@ -14,8 +14,8 @@ export default function MenuMain() {
 
     ]
   return (
-    <div className='bg-[#1B4965]'>
-        <div className='bg-[#62B6CB] flex items-center justify-center mt-3 mb-10 w-[430px] h-[57px] '>
+    <div className='bg-white'>
+        <div className='bg-white flex items-center justify-center mt-3 mb-10 w-[430px] h-[57px] border-b-2 border-b-[#03045E] shadow-xl'>
             <p className='text-[15px]'>دانشگاه خلیج فارس بوشهر</p>
         </div>
     <div className='flex items-center justify-center'>

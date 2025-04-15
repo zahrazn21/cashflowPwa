@@ -1,12 +1,14 @@
 import  'react'
 import { FaRegDotCircle } from "react-icons/fa";
 import TablePlan from '../components/table/TablePlan';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import Date from '../components/ui/date';
 import axios from 'axios'
+import notFound from "./../assets/image/notFound.png"
 import IsLoding from '../utils/loading/IsLoding';
+// import FilterBox from '../components/FilterBox/FilterBox';
 // import MyTable from '../components/table/MyTable';
 
 // import WeeklySchedule from './WeeklySchedule';
@@ -17,6 +19,7 @@ interface Schedule{
     data: string[];
   }[];
 };
+
 
 
 export default function CoursesOffered() {
@@ -112,7 +115,7 @@ export default function CoursesOffered() {
         datas:["همه","ادبیات","علوم داده","علوم پایه","پتروشیمی","مهندسی"]
         },
         {
-        title:"دروس",
+        title:"نوع درس",
         datas:[
           "همه","اصلی","تخصصی","پایه","اختیاری","عمومی"
         ]
@@ -132,9 +135,11 @@ export default function CoursesOffered() {
       });
   // تابعی برای تغییر مقدار فیلترها
   const handleSelectChange = (key:string, value:string) => {
+    setFlag(false);
+    setShowTitle(value);
     setSelectedFilters((prev) => ({ ...prev, [key]: value }));
     if(value=="همه"){
-      setSelectedFilters((prev) => ({ ...prev, [key]: " " }));
+      setSelectedFilters((prev) => ({ ...prev, [key]: "" }));
     }
   };
 
@@ -146,9 +151,9 @@ export default function CoursesOffered() {
   const filterCourses = () => {
     setFilterClick(true)
     const result = dataTable.rows.filter(course => {
-      const courseMoqat = course.data[6];  // مقطع درس
-      const courseNoe = course.data[5];    // نوع درس
-      const courseDaneshkadeh = course.data[2];    // نوع درس
+      const courseMoqat = course.data[4];  // مقطع درس
+      const courseNoe = course.data[8];    // نوع درس
+      const courseDaneshkadeh = course.data[5];    // نوع درس
 
 
       // مقایسه مقطع و نوع با ورودی‌های کاربر
@@ -186,7 +191,37 @@ export default function CoursesOffered() {
 
   
 
+
+
+  const [clickMenu, setClickMenue] = useState(0);
+  const [showTitle, setShowTitle] = useState("همه");
+  const [flag, setFlag] = useState(false);
+
+  const clickFilter = (index: number) => {
+    if (clickMenu) {
+      setClickMenue(index);
+      setFlag(true);
+    } else {
+      setClickMenue(-1);
+      setFlag(false);
+    }
+  };
+    const boxRef = useRef<HTMLUListElement | null>(null);
   
+    useEffect(() => {
+      function handleClickOutside(event: MouseEvent): void {
+        if (boxRef.current && !boxRef.current.contains(event.target as Node)) {
+          setFlag(false);
+
+        }
+      }
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
   return (
     <div>
            {/*    search  */}
@@ -216,33 +251,43 @@ export default function CoursesOffered() {
                   <p className='mr-1 text-[10px] cursor-pointer' onClick={filterCourses}>اعمال فیلتر</p>
 
               </div>
-       <div className="flex justify-around mt-1 mb-5 items-center" dir='rtl'>
-            {categirisFilter.map((res,index)=>(
-              <div className='flex items-center justify-center'>
+               <div className="flex justify-around mt-1 mb-5 items-center" dir='rtl'>
+       {categirisFilter.map((res, index) => (
+            <div className="grid place-content-center w-[100px] text-center justify-items-center">
               <label
-              className='text-center w-[58.14px] h-[17px] rounded-[15px] border-2 border-[#03045E] text-[#03045e] flex justify-center items-center py-2 text-[10px]'
-              >{res.title}</label>
-              <div className='text-[10px] mr-1 text-[#03045E]'>
-              <FaRegDotCircle></FaRegDotCircle>
+                onClick={() => clickFilter(index + 1)}
+                className="text-center cursor-pointer select-none  w-[58.14px] h-[17px] rounded-[15px] border-2 border-[#03045E] text-[#03045e] flex justify-center items-center py-2 text-[10px]"
+              >
+                {res.title}
+              </label>
+              <div className="flex mt-2 justify-center items-center">
+                <div className="text-[10px] mr-1 text-[#03045E]">
+                  <FaRegDotCircle></FaRegDotCircle>
+                </div>
+                <div className="text-[10px] ">{index + 1 == clickMenu ? showTitle : Object.values(selectedFilters)[index] || "همه"}</div>
+                {clickMenu === index + 1 && flag && (
+                  <ul
+                  ref={boxRef}
+
+                    className={`text-[10px] gap-[5px] grid  w-[80px] min-w-auto bg-[#fff] border-2 border-[#03045E]  appearance-none py-2 absolute  text-center z-50 top-42  rounded-[15px]  `}
+                  >
+                    {res.datas.map((result, j) => (
+                      <li
+                        onClick={() =>
+                          handleSelectChange(`filter${index + 1}`, result)
+                        }
+                        dir="rtl"
+                        className=" cursor-pointer py-[2px]  px-2 hover:bg-[#03045E] hover:text-white border-none outline-none text-[10px]"
+                        value={j == 0 ? "" : result}
+                      >
+                        {result}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              <select 
-                  onChange={(e) => handleSelectChange(`filter${index + 1}`, e.target.value)}
-                  className={`text-[10px] w-[60px] appearance-none py-1  text-center z-10 hiddenBox rounded-[15px] border-none outline-none`} 
-               name={res.title} id={res.title}
-               >
-      
-               {res.datas.map((result,j)=>(
-               
-                <option
-              dir='rtl'
-              className='bg-[#CAF0F8]  border-none outline-none text-[10px]' value={j==0 ? "" :result}>{result}</option>
-             
-            
-             ))}       
-            </select>
             </div>
-      
-             ))}
+          ))}
            </div>
 
 
@@ -264,9 +309,9 @@ export default function CoursesOffered() {
             
           :
           // <TablePlan data={data}></TablePlan>
-          <div className='text-center'>
-          پیدا نشد
-         </div>                   
+          <div className="text-center mt-14"> 
+          <img src={notFound} alt="" />
+        </div>                  
 
            }
 
@@ -293,6 +338,17 @@ export default function CoursesOffered() {
           پیدا نشد
          </div> 
            } */}
+
+
+
+
+      {/* <FilterBox categirisFilter={categirisFilter} 
+      childComponent={(props) => <TablePlan {...props} />}
+      dataTable={dataTable}
+      filterCourses={filterCourses}
+      filteredCourses={filteredCourses}
+      ></FilterBox> */}
+
 
     </div>
   )

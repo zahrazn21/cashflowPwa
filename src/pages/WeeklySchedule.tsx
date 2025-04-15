@@ -8,12 +8,14 @@ import TableWeeklySchedule from '../components/table/TableWeeklySchedule';
 import Date from '../components/ui/date';
 import IsLoding from '../utils/loading/IsLoding';
 import axios from 'axios';
+import notFound from "./../assets/image/notFound.png"
+
 // import WeeklySchedule from './WeeklySchedule';
 
 interface Schedule {
   header: string[];
   rows: {
-    data: (string | { course: string; level: string })[];
+    data: (string | { course: string; level: string; professor:string  }[])[];
   }[];
 };
 export default function WeeklySchedule() {
@@ -99,7 +101,7 @@ export default function WeeklySchedule() {
 
 
 
-
+ 
 
 
 
@@ -136,8 +138,11 @@ export default function WeeklySchedule() {
 
   const [selectedFilters, setSelectedFilters] = useState({
     filter1: "",
+    filter2: "",
+
   });
 
+  console.log("filters",selectedFilters);
   
 // تابعی برای تغییر مقدار فیلترها
 const handleSelectChange = (key:string, value:string) => {
@@ -153,26 +158,49 @@ const filteredProducts = dataTable.rows.map((row) => {
   const filteredCells = row.data.map((cell, index) => {
     if (index === 0) return cell; // (روزهای هفته)
 
-    const filterMatch = Object.values(selectedFilters).every((filter) =>
-      filter
-        ? typeof cell === "object" &&
-          (cell.course.toLowerCase().includes(filter.toLowerCase()) ||
-            cell.level === filter)    
-        : true
-    );
+    const filteredCell = Array.isArray(cell)
+    ? cell.filter((res) =>
+      
+          Object.values(selectedFilters).every((filter) =>
+            filter
+              ? res.course.toLowerCase().includes(filter.toLowerCase()) || res.level === filter || res.professor===filter
+              : true
+          )
+        
+      )
+    : cell;
+  
+  const filterMatch = filteredCell.length > 0;
+  
+  const searchMatch = searchTerm
+    ? Array.isArray(filteredCell) &&
+      filteredCell.some((res) =>
+        res.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        res.level.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : true;
+  
+  
 
-    const searchMatch = searchTerm
-      ? typeof cell === "object" &&
-        (cell.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          cell.level.toLowerCase().includes(searchTerm.toLowerCase()))
-      : true;
-
-    return filterMatch && searchMatch ? cell : ""; 
-  });
+    return filterMatch && searchMatch ? filteredCell : "";
+    });
 
   return { ...row, data: filteredCells };
 });
 
+
+
+
+
+
+
+
+ const professorNames=["همه",
+  "دکتر حسینی", "دکتر شریفی", "دکتر علی‌زاده", "دکتر مهدی‌پور", 
+  "دکتر رضوانی", "دکتر طاهری", "دکتر شایان", "دکتر امامی", 
+  "دکتر صادقی", "دکتر رضوی", "دکتر انصاری", "دکتر مرادی", 
+  "دکتر محسنی", "دکتر اسدی", "دکتر نادری", "دکتر ملکی"
+]
 
 
 return (
@@ -205,7 +233,7 @@ return (
               <p className='mr-1 text-[10px]'>اعمال فیلتر</p>
           </div>
    <div className="flex justify-around mt-1 mb-5 items-center" dir='rtl'>
-        {categirisFilter.map((res,index)=>(
+        {categirisFilter.map((res)=>(
           <div className='flex mt-[20px] items-center place-content-center text-center justify-items-center'>
           <label
           className='text-center  w-[58.14px] h-[17px] rounded-[15px] border-2 border-[#03045E] text-[#03045e] flex justify-center items-center py-2 text-[10px]'
@@ -220,7 +248,7 @@ return (
                      </div>
                     <p className={`text-[${result.color}] text-[8px] cursor-pointer`}
                      style={{color:result.color}}
-                      onClick={() => handleSelectChange(`filter${index + 1}`, result.title)}
+                      onClick={() => handleSelectChange(`filter1`, result.title)}
 
                     >{result.title}</p>
                  </div>
@@ -234,7 +262,21 @@ return (
          ))}
        </div>
 
-
+         <div className='my-5'>
+          <select name="" className='rounded-[15px] text-[8px] w-[50%] border-2 border-[#03045E] py-1' id=""
+           onChange={(e)=>handleSelectChange(`filter2`, e.target.value)}
+          >
+            <div className=''>
+            {professorNames.map((res)=>(
+            <option className="w-[120px] text-center" value={res}>
+               <div>{res}</div>
+            </option>
+          ))}
+            </div>
+        
+          </select>
+     
+         </div>
 
 
           {/* {filteredProducts.length>0 ? 
@@ -257,13 +299,13 @@ return (
             
           :
           // <TablePlan data={data}></TablePlan>
-          <div className='text-center'>
-          پیدا نشد
-         </div>                   
+          <div className="text-center mt-14"> 
+          <img src={notFound} alt="" />
+          </div>
 
            }
 
-
+          
    
           {/* <Routes>
             <Route path={"weeklySchedule"} element={<WeeklySchedule></WeeklySchedule>}></Route>

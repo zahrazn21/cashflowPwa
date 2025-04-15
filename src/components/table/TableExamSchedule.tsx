@@ -1,3 +1,17 @@
+import { motion } from 'framer-motion';
+
+const rowVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i:number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  }),
+};
 
 
 import 'react'
@@ -13,8 +27,8 @@ interface T{
 export default function TableExamSchedule({data}:T) {
 
   return (
-    <div className="w-[432px] h-auto max-h-[70vh] flex justify-center overflow-y-auto">
-      <table  className="table-auto w-[99%] border-collapse ">
+    <div className="w-[432px] h-auto max-h-[65vh] flex justify-center overflow-y-auto">
+      <table dir='rtl' className="table-auto w-[99%] border-collapse ">
       <thead dir='rtl' className="sticky top-0 bg-white z-10 w-[500px]">
       <tr className='' dir='rtl'>
             {data.header.map((res,index)=>(
@@ -32,7 +46,14 @@ export default function TableExamSchedule({data}:T) {
         </thead>
         <tbody>
           {data.rows.map((res,index)=>(
-            <tr key={index}>
+                <motion.tr
+                             key={index}
+                             custom={index}
+                             initial="hidden"
+                             whileInView="visible"
+                             viewport={{ once: false, amount: 0.5 }} // می‌گه وقتی 5۰٪ عنصر توی دید بود، انیمیشن شروع شه
+                             variants={rowVariants}
+                              >
                 {res.data.map((result,i)=>(
                     i<3 &&
 
@@ -44,7 +65,7 @@ export default function TableExamSchedule({data}:T) {
                   </p>
                   </td>
                 ))}
-            </tr>
+                </motion.tr>
           ))}
         </tbody>
       </table>

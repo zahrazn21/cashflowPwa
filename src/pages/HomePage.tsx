@@ -1,6 +1,6 @@
 import  'react'
 import logoUni from "../assets/image/logoUni.png"
-import SerchInput from '../components/ui/serchInput'
+// import SerchInput from '../components/ui/serchInput'
 import { Link } from 'react-router-dom'
 
 export default function HomePage() {
@@ -23,9 +23,9 @@ export default function HomePage() {
               
                 </div>
                
-                <div>
+                {/* <div>
                     <SerchInput size='224' rounded='15px' color='#03045E'></SerchInput>
-                </div>
+                </div> */}
                 </div>
       
          </div>

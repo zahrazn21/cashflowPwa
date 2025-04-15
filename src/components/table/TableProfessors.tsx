@@ -1,3 +1,17 @@
+import { motion } from 'framer-motion';
+
+const rowVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: (i:number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  }),
+};
 
 import 'react'
 interface Schedule{
@@ -62,14 +76,14 @@ export default function TableProfessors({data}:T) {
   console.log(colorHead[1])
   return (
     <div className="flex justify-center">
-         <div className="w-[370px] xl:w-[420px] h-auto max-h-[50vh] overflow-x-scroll overflow-y-auto flex justify-center">
+         <div className="w-auto xl:w-[420px] h-auto max-h-[55vh]  overflow-y-auto flex justify-center">
       <table dir='rtl' className="table-auto max-h-[50vh] w-[370px] xl:w-[420px] max-w-[430px] border-collapse ">
       <thead className="sticky top-0 bg-white z-10 w-[500px]">
       <tr className=''>
             {data.header.map((res,index)=>(
-                index>0 &&
+                // index>0 &&
                     <th className='' key={index} >
-                 <p className={`mx-[2px] ${index==6 ? "text-[#03045E]":"text-white bg-[#03045E]" } flex items-center justify-center h-[32px] border-1 border-[#03045E] text-[8px] p-1  `}    
+                 <p className={`mx-[2px] ${index==1 ? "text-[#03045E]":"text-white bg-[#03045E]" } flex items-center justify-center h-[32px] border-1 border-[#03045E] text-[8px] p-1  `}    
                 >
                  {res}
                  </p>
@@ -81,18 +95,27 @@ export default function TableProfessors({data}:T) {
         </thead>
         <tbody>
           {data.rows.map((res,index)=>(
-            <tr key={index}>
+              <motion.tr
+               key={index}
+               custom={index}
+               initial="hidden"
+               whileInView="visible"
+               viewport={{ once: false, amount: 0.5 }} // می‌گه وقتی 5۰٪ عنصر توی دید بود، انیمیشن شروع شه
+               variants={rowVariants}
+                >
+
                 {res.data.map((result,i)=>(
-                    i>0 &&
+                    // i>0 &&
                   <td className='  text-center' key={i}>
-                  <p className={`${ i==6  ? "bg-[#03045E] text-white" :" hover:bg-gray-200 cursor-pointer"} h-[36px] flex items-center justify-center border-[#D9D9D9] border-1 m-[2px] p-1 text-[7px]` }
+                  <p className={`${ i==1  ? "bg-[#03045E] text-white" :" hover:bg-gray-200 cursor-pointer"} h-[36px] flex items-center justify-center border-[#D9D9D9] border-1 m-[2px] p-1 text-[7px]` }
 
                 >
                   {result}
                   </p>
                   </td>
                 ))}
-            </tr>
+                        </motion.tr>
+
           ))}
         </tbody>
       </table>
